@@ -3,7 +3,7 @@
 // all pages through the use of the <BaseHead /> component.
 import '../styles/global.css';
 import type { ImageMetadata } from 'astro';
-import FallbackImage from '../assets/avatar.webp';
+import FallbackImage from '../assets/banner.webp';
 import { SITE_TITLE, SITE_DESCRIPTION, SITE_URL, SITE_AUTHOR, TWITTER_HANDLE } from '../consts';
 
 interface Props {
@@ -62,14 +62,18 @@ const fullTitle = title === SITE_TITLE ? title : `${title} | ${SITE_TITLE}`;
 <meta name="author" content={SITE_AUTHOR} />
 <meta name="keywords" content="programming, development, coding, blog, tech" />
 
-<!-- Open Graph / Facebook -->
+<!-- Open Graph / Facebook / Discord / iMessage -->
 <meta property="og:type" content={type} />
 <meta property="og:url" content={Astro.url} />
 <meta property="og:site_name" content={SITE_TITLE} />
-<meta property="og:title" content={fullTitle} />
+<meta property="og:title" content={title} />
 <meta property="og:description" content={description} />
 <meta property="og:image" content={imageUrl} />
-<meta property="og:image:alt" content={title} />
+<meta property="og:image:secure_url" content={imageUrl} />
+<meta property="og:image:type" content="image/webp" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content={`${title} - ${SITE_TITLE}`} />
 <meta property="og:locale" content="en_US" />
 {type === 'article' && articleDate && (
 	<>
@@ -81,13 +85,14 @@ const fullTitle = title === SITE_TITLE ? title : `${title} | ${SITE_TITLE}`;
 
 <!-- Twitter -->
 <meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:domain" content="blog.zer0.live" />
 <meta name="twitter:url" content={Astro.url} />
 <meta name="twitter:site" content={TWITTER_HANDLE} />
 <meta name="twitter:creator" content={TWITTER_HANDLE} />
-<meta name="twitter:title" content={fullTitle} />
+<meta name="twitter:title" content={title} />
 <meta name="twitter:description" content={description} />
 <meta name="twitter:image" content={imageUrl} />
-<meta name="twitter:image:alt" content={title} />
+<meta name="twitter:image:alt" content={`${title} - ${SITE_TITLE}`} />
 
 <!-- JSON-LD Structured Data -->
 <script type="application/ld+json" set:html={JSON.stringify({

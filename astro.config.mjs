@@ -24,7 +24,7 @@ function pagefind() {
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://example.com',
+  site: 'https://blog.zer0.live',
   integrations: [mdx(), sitemap(), react(), pagefind()],
 
   vite: {
