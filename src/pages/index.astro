@@ -2,7 +2,8 @@
 import BaseHead from '../components/BaseHead.astro';
 import Footer from '../components/Footer.astro';
 import Header from '../components/Header.astro';
-import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
+import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
+import { Terminal, ChevronRight } from 'lucide-react';
 ---
 
 <!doctype html>
@@ -10,39 +11,65 @@ import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 	<head>
 		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
 	</head>
-	<body>
+	<body class="bg-zinc-950 text-zinc-100 flex flex-col min-h-screen font-mono">
 		<Header />
-		<main>
-			<h1>🧑‍🚀 Hello, Astronaut!</h1>
-			<p>
-				Welcome to the official <a href="https://astro.build/">Astro</a> blog starter template. This template
-				serves as a lightweight, minimally-styled starting point for anyone looking to build a personal
-				website, blog, or portfolio with Astro.
-			</p>
-			<p>
-				This template comes with a few integrations already configured in your
-				<code>astro.config.mjs</code> file. You can customize your setup with
-				<a href="https://astro.build/integrations">Astro Integrations</a> to add tools like Tailwind,
-				React, or Vue to your project.
-			</p>
-			<p>Here are a few ideas on how to get started with the template:</p>
-			<ul>
-				<li>Edit this page in <code>src/pages/index.astro</code></li>
-				<li>Edit the site header items in <code>src/components/Header.astro</code></li>
-				<li>Add your name to the footer in <code>src/components/Footer.astro</code></li>
-				<li>Check out the included blog posts in <code>src/content/blog/</code></li>
-				<li>Customize the blog post page layout in <code>src/layouts/BlogPost.astro</code></li>
-			</ul>
-			<p>
-				Have fun! If you get stuck, remember to
-				<a href="https://docs.astro.build/">read the docs</a>
-				or <a href="https://astro.build/chat">join us on Discord</a> to ask questions.
-			</p>
-			<p>
-				Looking for a blog template with a bit more personality? Check out
-				<a href="https://github.com/Charca/astro-blog-template">astro-blog-template</a>
-				by <a href="https://twitter.com/Charca">Maxi Ferreira</a>.
-			</p>
+		<main class="w-full max-w-4xl mx-auto px-4 py-16 flex-grow">
+            <div class="flex flex-col items-start space-y-8">
+                
+                <div class="w-full bg-zinc-900 rounded-lg border border-zinc-800 p-4 shadow-2xl">
+                    <div class="flex items-center gap-2 mb-4 border-b border-zinc-800 pb-2">
+                        <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                        <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+                        <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                        <div class="ml-2 text-xs text-zinc-500">bash — 80x24</div>
+                    </div>
+                    <div class="space-y-2 font-mono text-sm md:text-base">
+                        <p class="text-zinc-400">
+                            <span class="text-blue-500">user@devblog</span>:<span class="text-blue-300">~</span>$ ./init.sh
+                        </p>
+                        <h1 class="text-2xl md:text-4xl font-bold tracking-tight text-zinc-100 py-2">
+                            Hello, World! <span class="animate-pulse inline-block text-blue-500">_</span>
+                        </h1>
+                        <p class="text-zinc-400 max-w-2xl leading-relaxed">
+                            Welcome to <span class="text-blue-400 font-bold">DevBlog</span>. Documenting my journey into programming, capturing exceptions, and deploying knowledge.
+                        </p>
+                         <p class="text-zinc-400">
+                            <span class="text-blue-500">user@devblog</span>:<span class="text-blue-300">~</span>$ <span class="animate-pulse">|</span>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="flex flex-wrap gap-4 mt-8">
+                    <a href="/blog" class="group px-6 py-3 bg-zinc-100 text-zinc-900 font-bold rounded hover:bg-blue-500 hover:text-white transition-all flex items-center gap-2">
+                        <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                        ./read-blog.sh
+                    </a>
+                    <a href="/about" class="px-6 py-3 bg-transparent text-zinc-400 font-medium rounded border border-zinc-700 hover:border-blue-500 hover:text-blue-400 transition-colors">
+                        man about
+                    </a>
+                </div>
+            </div>
+            
+            <div class="mt-24 grid md:grid-cols-3 gap-8 text-left">
+                <div class="p-6 rounded-lg bg-zinc-900/50 border border-zinc-800 hover:border-blue-500/50 transition-colors">
+                    <h3 class="text-lg font-bold mb-2 text-blue-400 flex items-center gap-2">
+                        <span class="text-zinc-600">01.</span> Learning
+                    </h3>
+                    <p class="text-zinc-400 text-sm">Initializing new concepts and compiling knowledge bases.</p>
+                </div>
+                <div class="p-6 rounded-lg bg-zinc-900/50 border border-zinc-800 hover:border-blue-500/50 transition-colors">
+                     <h3 class="text-lg font-bold mb-2 text-blue-400 flex items-center gap-2">
+                        <span class="text-zinc-600">02.</span> Building
+                    </h3>
+                    <p class="text-zinc-400 text-sm">Executing projects and debugging real-world problems.</p>
+                </div>
+                <div class="p-6 rounded-lg bg-zinc-900/50 border border-zinc-800 hover:border-blue-500/50 transition-colors">
+                     <h3 class="text-lg font-bold mb-2 text-blue-400 flex items-center gap-2">
+                        <span class="text-zinc-600">03.</span> Sharing
+                    </h3>
+                    <p class="text-zinc-400 text-sm">Pushing commits to the open source community.</p>
+                </div>
+            </div>
 		</main>
 		<Footer />
 	</body>
