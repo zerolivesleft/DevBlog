@@ -53,10 +53,10 @@ body {
     width: 10px;
   }
   ::-webkit-scrollbar-track {
-    @apply bg-zinc-900;
+    @apply bg-transparent;
   }
   ::-webkit-scrollbar-thumb {
-    @apply bg-zinc-700 border-2 border-zinc-900 rounded-full hover:bg-zinc-600;
+    @apply bg-zinc-700 rounded-full hover:bg-zinc-600;
   }
 }
 
