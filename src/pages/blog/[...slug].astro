@@ -12,9 +12,16 @@ export async function getStaticPaths() {
 type Props = CollectionEntry<'blog'>;
 
 const post = Astro.props;
-const { Content } = await render(post);
+const { Content, headings } = await render(post);
+
+// Get related posts (placeholder logic: gets latest 3 posts excluding current one)
+const allPosts = await getCollection('blog');
+const relatedPosts = allPosts
+    .filter(p => p.id !== post.id)
+    .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+    .slice(0, 3);
 ---
 
-<BlogPost {...post.data}>
+<BlogPost {...post.data} headings={headings} relatedPosts={relatedPosts}>
 	<Content />
 </BlogPost>

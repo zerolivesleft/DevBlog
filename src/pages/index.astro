@@ -2,8 +2,35 @@
 import BaseHead from '../components/BaseHead.astro';
 import Footer from '../components/Footer.astro';
 import Header from '../components/Header.astro';
+import FormattedDate from '../components/FormattedDate.astro';
 import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
-import { Terminal, ChevronRight } from 'lucide-react';
+import { ChevronRight, Terminal, Cpu, Code2, GitBranch, ArrowRight, FileText, Calendar } from 'lucide-react';
+import { getCollection } from 'astro:content';
+
+// Data fetching
+const posts = await getCollection('blog');
+const projects = await getCollection('projects');
+
+// Get recent posts (latest 3)
+const recentPosts = posts
+    .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+    .slice(0, 3);
+
+// GitHub Stats
+let publicRepos = '12+';
+let followers = '0';
+
+try {
+    const response = await fetch('https://api.github.com/users/ZeroLivesLeft');
+    if (response.ok) {
+        const data = await response.json();
+        publicRepos = data.public_repos;
+        followers = data.followers;
+    }
+} catch (e) {
+    console.error('Failed to fetch GitHub stats:', e);
+}
+
 ---
 
 <!doctype html>
@@ -13,61 +40,330 @@ import { Terminal, ChevronRight } from 'lucide-react';
 	</head>
 	<body class="bg-zinc-950 text-zinc-100 flex flex-col min-h-screen font-mono">
 		<Header />
-		<main class="w-full max-w-4xl mx-auto px-4 py-16 flex-grow">
-            <div class="flex flex-col items-start space-y-8">
-                
-                <div class="w-full bg-zinc-900 rounded-lg border border-zinc-800 p-4 shadow-2xl">
-                    <div class="flex items-center gap-2 mb-4 border-b border-zinc-800 pb-2">
-                        <div class="w-3 h-3 rounded-full bg-red-500"></div>
-                        <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
-                        <div class="w-3 h-3 rounded-full bg-green-500"></div>
-                        <div class="ml-2 text-xs text-zinc-500">bash — 80x24</div>
-                    </div>
-                    <div class="space-y-2 font-mono text-sm md:text-base">
-                        <p class="text-zinc-400">
-                            <span class="text-blue-500">user@devblog</span>:<span class="text-blue-300">~</span>$ ./init.sh
-                        </p>
-                        <h1 class="text-2xl md:text-4xl font-bold tracking-tight text-zinc-100 py-2">
-                            Hello, World! <span class="animate-pulse inline-block text-blue-500">_</span>
-                        </h1>
-                        <p class="text-zinc-400 max-w-2xl leading-relaxed">
-                            Welcome to <span class="text-blue-400 font-bold">DevBlog</span>. Documenting my journey into programming, capturing exceptions, and deploying knowledge.
-                        </p>
-                         <p class="text-zinc-400">
-                            <span class="text-blue-500">user@devblog</span>:<span class="text-blue-300">~</span>$ <span class="animate-pulse">|</span>
-                        </p>
+		<main class="w-full max-w-5xl mx-auto px-4 py-8 md:py-16 flex-grow">
+            <!-- Hero Section -->
+            <div class="flex flex-col items-center text-center space-y-8 md:space-y-12 mb-16 md:mb-32">
+                <div class="relative">
+                    <div class="absolute -inset-1 bg-gradient-to-r from-blue-600 to-cyan-600 rounded-lg blur opacity-25 animate-pulse"></div>
+                    <div class="relative bg-zinc-900 ring-1 ring-zinc-800 rounded-lg p-2 flex items-center gap-2 text-sm text-zinc-400">
+                        <Terminal size={16} className="text-blue-500" />
+                        <span>v1.0.0 stable</span>
                     </div>
                 </div>
+                
+                <h1 class="text-3xl md:text-6xl font-bold tracking-tight text-zinc-100 max-w-3xl flex flex-col items-center">
+                    <span class="relative">
+                        <span class="text-blue-500 absolute right-full">&lt;</span>Developer
+                    </span>
+                    <span class="relative">
+                        Chronicles<span class="text-blue-500 absolute left-full">/&gt;</span>
+                    </span>
+                </h1>
+                
+                <p class="text-lg md:text-xl text-zinc-400 max-w-2xl leading-relaxed">
+                    A digital garden documenting my path to mastery. <br class="hidden md:block"/>
+                    From <span class="text-blue-400">console.log</span> to production deployment.
+                </p>
 
-                <div class="flex flex-wrap gap-4 mt-8">
-                    <a href="/blog" class="group px-6 py-3 bg-zinc-100 text-zinc-900 font-bold rounded hover:bg-blue-500 hover:text-white transition-all flex items-center gap-2">
-                        <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                        ./read-blog.sh
+                <div class="flex flex-col sm:flex-row gap-4 w-full justify-center">
+                    <a href="/blog" class="group relative px-8 py-4 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-500 transition-all flex items-center justify-center gap-2 shadow-lg shadow-blue-900/20 overflow-hidden">
+                        <div class="absolute inset-0 bg-gradient-to-r from-blue-600 to-blue-500 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                        <div class="relative flex items-center gap-2">
+                            <Terminal className="w-5 h-5" />
+                            <span class="font-mono">./blog --execute</span>
+                            <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                        </div>
+                        <div class="absolute bottom-0 left-0 right-0 h-0.5 bg-blue-300 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left"></div>
                     </a>
-                    <a href="/about" class="px-6 py-3 bg-transparent text-zinc-400 font-medium rounded border border-zinc-700 hover:border-blue-500 hover:text-blue-400 transition-colors">
-                        man about
+                    <a href="/about" class="group relative px-8 py-4 bg-zinc-900 text-zinc-300 font-bold rounded-lg border border-zinc-800 hover:border-blue-500/50 hover:text-blue-400 transition-all flex items-center justify-center overflow-hidden">
+                        <div class="absolute inset-0 bg-zinc-800/50 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                        <span class="relative font-mono">man about</span>
+                        <div class="absolute top-1 right-2 text-[10px] text-zinc-600 group-hover:text-blue-500 transition-colors font-mono">^Z</div>
                     </a>
                 </div>
             </div>
             
-            <div class="mt-24 grid md:grid-cols-3 gap-8 text-left">
-                <div class="p-6 rounded-lg bg-zinc-900/50 border border-zinc-800 hover:border-blue-500/50 transition-colors">
-                    <h3 class="text-lg font-bold mb-2 text-blue-400 flex items-center gap-2">
-                        <span class="text-zinc-600">01.</span> Learning
-                    </h3>
-                    <p class="text-zinc-400 text-sm">Initializing new concepts and compiling knowledge bases.</p>
+            <!-- Terminal Window Preview -->
+            <div class="w-full bg-zinc-900/50 rounded-xl border border-zinc-800 shadow-2xl backdrop-blur-sm mb-16 md:mb-32 overflow-hidden group hover:border-zinc-700 transition-colors">
+                <div class="flex items-center gap-2 border-b border-zinc-800 px-4 py-3 bg-zinc-900/70">
+                    <div class="flex gap-2">
+                        <button class="w-3 h-3 rounded-full bg-red-500/80 hover:bg-red-400 transition-colors"></button>
+                        <button class="w-3 h-3 rounded-full bg-yellow-500/80 hover:bg-yellow-400 transition-colors"></button>
+                        <button class="w-3 h-3 rounded-full bg-green-500/80 hover:bg-green-400 transition-colors"></button>
+                    </div>
+                    <div class="flex-1 text-center text-xs text-zinc-500 font-mono">
+                        <span class="text-zinc-600">user@localhost:</span><span class="text-blue-500">~/projects/devblog</span>
+                    </div>
+                    <div class="flex gap-1">
+                        <div class="w-3 h-3 border border-zinc-700 rounded-sm"></div>
+                    </div>
                 </div>
-                <div class="p-6 rounded-lg bg-zinc-900/50 border border-zinc-800 hover:border-blue-500/50 transition-colors">
-                     <h3 class="text-lg font-bold mb-2 text-blue-400 flex items-center gap-2">
-                        <span class="text-zinc-600">02.</span> Building
-                    </h3>
-                    <p class="text-zinc-400 text-sm">Executing projects and debugging real-world problems.</p>
+                <div class="p-4 md:p-6 font-mono text-xs md:text-sm">
+                    <div class="flex items-center gap-2 text-zinc-500 mb-3">
+                        <span class="text-green-500">→</span>
+                        <span>cat README.md</span>
+                    </div>
+                    <div class="space-y-3 md:space-y-4 pl-4 border-l-2 border-zinc-800 ml-1">
+                        <div class="text-zinc-400 font-bold">
+                            <span class="text-blue-400">#</span> Why I started this blog
+                        </div>
+                        <p class="text-zinc-400 leading-relaxed">
+                            I believe the best way to learn is to teach (or at least document). This space serves as my external memory bank for code snippets, architectural decisions, and the inevitable "gotchas" I encounter daily.
+                        </p>
+                    </div>
+                    <div class="flex gap-2 items-center text-zinc-500 mt-4 md:mt-6 group-hover:text-blue-400 transition-colors">
+                        <span class="text-blue-500">→</span>
+                        <span class="opacity-0 group-hover:opacity-100 transition-opacity">git commit -m "Learning in public"</span>
+                        <span class="animate-pulse group-hover:hidden">_</span>
+                    </div>
                 </div>
-                <div class="p-6 rounded-lg bg-zinc-900/50 border border-zinc-800 hover:border-blue-500/50 transition-colors">
-                     <h3 class="text-lg font-bold mb-2 text-blue-400 flex items-center gap-2">
-                        <span class="text-zinc-600">03.</span> Sharing
-                    </h3>
-                    <p class="text-zinc-400 text-sm">Pushing commits to the open source community.</p>
+            </div>
+
+            <!-- Feature Grid - Card Style with Different Look -->
+            <div class="mb-16 md:mb-24">
+                <h2 class="text-2xl md:text-3xl font-bold mb-8 flex items-center gap-3">
+                    <span class="text-zinc-600">//</span>
+                    <span class="text-zinc-100">What You'll Find Here</span>
+                </h2>
+                
+                <div class="grid md:grid-cols-3 gap-6">
+                    <!-- Tech Stack Card -->
+                    <div class="group relative">
+                        <div class="absolute -inset-0.5 bg-gradient-to-br from-blue-500/20 to-blue-500/5 rounded-xl blur opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                        <div class="relative bg-zinc-900 border border-zinc-800 rounded-xl p-6 hover:border-blue-500/50 transition-all duration-300 h-full">
+                            <div class="w-12 h-12 bg-blue-500/10 rounded-lg flex items-center justify-center mb-4 border border-blue-500/20 group-hover:scale-110 transition-transform">
+                                <Cpu className="w-6 h-6 text-blue-500" />
+                            </div>
+                            <h3 class="text-lg font-bold mb-3 text-zinc-100 group-hover:text-blue-400 transition-colors">
+                                Tech Stack
+                            </h3>
+                            <p class="text-sm text-zinc-500 leading-relaxed mb-4">
+                                Exploring modern web technologies, from React and Astro to serverless architectures and edge computing.
+			</p>
+                            <div class="text-xs text-blue-500 font-mono opacity-0 group-hover:opacity-100 transition-opacity">
+                                → ./explore --stack
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Code Snippets Card -->
+                    <div class="group relative">
+                        <div class="absolute -inset-0.5 bg-gradient-to-br from-purple-500/20 to-purple-500/5 rounded-xl blur opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                        <div class="relative bg-zinc-900 border border-zinc-800 rounded-xl p-6 hover:border-purple-500/50 transition-all duration-300 h-full">
+                            <div class="w-12 h-12 bg-purple-500/10 rounded-lg flex items-center justify-center mb-4 border border-purple-500/20 group-hover:scale-110 transition-transform">
+                                <Code2 className="w-6 h-6 text-purple-500" />
+                            </div>
+                            <h3 class="text-lg font-bold mb-3 text-zinc-100 group-hover:text-purple-400 transition-colors">
+                                Code Snippets
+                            </h3>
+                            <p class="text-sm text-zinc-500 leading-relaxed mb-4">
+                                Reusable solutions to common problems, algorithms, and configuration files for quick reference.
+                            </p>
+                            <div class="text-xs text-purple-500 font-mono opacity-0 group-hover:opacity-100 transition-opacity">
+                                → ./snippets --view
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Open Source Card -->
+                    <div class="group relative">
+                        <div class="absolute -inset-0.5 bg-gradient-to-br from-green-500/20 to-green-500/5 rounded-xl blur opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                        <div class="relative bg-zinc-900 border border-zinc-800 rounded-xl p-6 hover:border-green-500/50 transition-all duration-300 h-full">
+                            <div class="w-12 h-12 bg-green-500/10 rounded-lg flex items-center justify-center mb-4 border border-green-500/20 group-hover:scale-110 transition-transform">
+                                <GitBranch className="w-6 h-6 text-green-500" />
+                            </div>
+                            <h3 class="text-lg font-bold mb-3 text-zinc-100 group-hover:text-green-400 transition-colors">
+                                Open Source
+                            </h3>
+                            <p class="text-sm text-zinc-500 leading-relaxed mb-4">
+                                Documenting contributions, maintaining projects, and learning from the wider developer community.
+                            </p>
+                            <div class="text-xs text-green-500 font-mono opacity-0 group-hover:opacity-100 transition-opacity">
+                                → git clone projects
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Posts Section -->
+            <div class="mb-16 md:mb-24">
+                <div class="flex items-center justify-between mb-6 md:mb-8">
+                    <h2 class="text-xl md:text-2xl font-bold text-zinc-100 flex items-center gap-2">
+                        <span class="text-blue-500">$</span> ls -l recent-posts/
+                    </h2>
+                    <a href="/blog" class="text-sm text-zinc-500 hover:text-blue-400 transition-colors flex items-center gap-1 group">
+                        cd blog/
+                        <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                    </a>
+                </div>
+                
+                <!-- Terminal-style list -->
+                <div class="bg-zinc-900/50 rounded-lg border border-zinc-800 overflow-hidden">
+                    <div class="border-b border-zinc-800 px-4 py-2 bg-zinc-900/50">
+                        <div class="flex items-center gap-2 text-xs text-zinc-500 font-mono">
+                            <span class="w-20">MODE</span>
+                            <span class="flex-1">NAME</span>
+                            <span class="hidden md:block w-32">MODIFIED</span>
+                        </div>
+                    </div>
+                    <div class="divide-y divide-zinc-800/50">
+                        {recentPosts.map((post, index) => (
+                            <a href={`/blog/${post.id}/`} class="group block px-4 py-4 hover:bg-zinc-800/30 transition-all relative">
+                                <!-- File indicator line -->
+                                <div class="absolute left-0 top-0 bottom-0 w-1 bg-blue-500 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left"></div>
+                                
+                                <div class="flex items-center gap-3 md:gap-4">
+                                    <!-- Permission/Mode -->
+                                    <div class="flex items-center gap-2 w-20 flex-shrink-0">
+                                        <span class="text-xs font-mono text-green-500">-rw-</span>
+                                    </div>
+                                    
+                                    <!-- File icon and content -->
+                                    <div class="flex-1 min-w-0 flex items-start gap-3">
+                                        <div class="flex-shrink-0 w-8 h-8 flex items-center justify-center">
+                                            <FileText className="w-5 h-5 text-blue-400 group-hover:text-blue-300 transition-colors" />
+                                        </div>
+                                        <div class="flex-1 min-w-0">
+                                            <div class="flex items-baseline gap-2 mb-1">
+                                                <h3 class="font-mono text-sm md:text-base text-zinc-200 group-hover:text-blue-400 transition-colors truncate">
+                                                    {post.data.title}
+                                                </h3>
+                                                <span class="hidden lg:inline text-xs text-zinc-600 font-mono">.md</span>
+                                            </div>
+                                            <p class="text-xs md:text-sm text-zinc-500 line-clamp-1 md:line-clamp-2 leading-relaxed">
+                                                {post.data.description}
+                                            </p>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Date -->
+                                    <div class="hidden md:flex items-center w-32 flex-shrink-0 text-xs text-zinc-600 font-mono">
+                                        <FormattedDate date={post.data.pubDate} />
+                                    </div>
+                                    
+                                    <!-- Arrow indicator -->
+                                    <div class="flex-shrink-0">
+                                        <ChevronRight className="w-4 h-4 text-zinc-600 group-hover:text-blue-400 group-hover:translate-x-1 transition-all" />
+                                    </div>
+                                </div>
+                                
+                                <!-- Mobile date -->
+                                <div class="md:hidden mt-2 ml-[4.5rem] text-xs text-zinc-600 font-mono">
+                                    <FormattedDate date={post.data.pubDate} />
+                                </div>
+                            </a>
+                        ))}
+                    </div>
+                    
+                    <!-- Footer -->
+                    <div class="border-t border-zinc-800 px-4 py-3 bg-zinc-900/30">
+                        <div class="flex items-center justify-between text-xs text-zinc-600 font-mono">
+                            <span>{recentPosts.length} files</span>
+                            <a href="/blog" class="text-blue-500 hover:text-blue-400 transition-colors flex items-center gap-1 group">
+                                view all
+                                <ArrowRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stats Section - Neofetch Style -->
+            <div class="border-t border-zinc-800 pt-12 md:pt-16">
+                <div class="flex items-center gap-2 mb-6 text-zinc-500 font-mono text-sm">
+                    <span class="text-blue-500">$</span>
+                    <span>neofetch --stats</span>
+                </div>
+                
+                <div class="bg-zinc-900/50 rounded-lg border border-zinc-800 p-6 md:p-8">
+                    <div class="flex flex-col md:flex-row gap-8 md:gap-12">
+                        <!-- ASCII Art / Logo -->
+                        <div class="hidden md:flex items-center justify-center flex-shrink-0">
+                            <pre class="font-mono text-xs leading-tight">
+<span class="text-blue-500">     ___     </span>
+<span class="text-blue-500">    /   \    </span>
+<span class="text-blue-400">   | O O |   </span>
+<span class="text-blue-400">   |  _  |   </span>
+<span class="text-cyan-500">    \___/    </span>
+<span class="text-cyan-500">   _|___|_   </span>
+<span class="text-zinc-600">  [_______]  </span></pre>
+                        </div>
+                        
+                        <!-- Stats Info -->
+                        <div class="flex-1 space-y-3 font-mono text-sm">
+                            <!-- Header -->
+                            <div class="mb-4">
+                                <div class="text-lg md:text-xl font-bold text-blue-400">ZeroLivesLeft</div>
+                                <div class="text-zinc-600 text-xs">─────────────────</div>
+                            </div>
+                            
+                            <!-- Stats Grid -->
+                            <div class="grid sm:grid-cols-2 gap-3">
+                                <div class="flex items-center gap-3">
+                                    <span class="text-blue-500 font-bold w-24 flex-shrink-0">repos</span>
+                                    <div class="flex items-center gap-2">
+                                        <div class="flex gap-0.5">
+                                            {Array.from({ length: Math.min(10, typeof publicRepos === 'number' ? publicRepos : 0) }).map(() => (
+                                                <div class="w-1 h-4 bg-blue-500 rounded-sm"></div>
+                                            ))}
+                                        </div>
+                                        <span class="text-zinc-300 font-bold">{publicRepos}</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-center gap-3">
+                                    <span class="text-green-500 font-bold w-24 flex-shrink-0">followers</span>
+                                    <div class="flex items-center gap-2">
+                                        <div class="flex gap-0.5">
+                                            {Array.from({ length: Math.min(10, typeof followers === 'number' ? followers : 0) }).map(() => (
+                                                <div class="w-1 h-4 bg-green-500 rounded-sm"></div>
+                                            ))}
+                                        </div>
+                                        <span class="text-zinc-300 font-bold">{followers}</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-center gap-3">
+                                    <span class="text-purple-500 font-bold w-24 flex-shrink-0">articles</span>
+                                    <div class="flex items-center gap-2">
+                                        <div class="flex gap-0.5">
+                                            {Array.from({ length: Math.min(10, posts.length) }).map(() => (
+                                                <div class="w-1 h-4 bg-purple-500 rounded-sm"></div>
+                                            ))}
+                                        </div>
+                                        <span class="text-zinc-300 font-bold">{posts.length}</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-center gap-3">
+                                    <span class="text-cyan-500 font-bold w-24 flex-shrink-0">projects</span>
+                                    <div class="flex items-center gap-2">
+                                        <div class="flex gap-0.5">
+                                            {Array.from({ length: Math.min(10, projects.length) }).map(() => (
+                                                <div class="w-1 h-4 bg-cyan-500 rounded-sm"></div>
+                                            ))}
+                                        </div>
+                                        <span class="text-zinc-300 font-bold">{projects.length}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Color Palette -->
+                            <div class="pt-4 mt-4 border-t border-zinc-800">
+                                <div class="flex gap-1">
+                                    <div class="w-6 h-6 rounded bg-zinc-950 border border-zinc-700"></div>
+                                    <div class="w-6 h-6 rounded bg-red-500"></div>
+                                    <div class="w-6 h-6 rounded bg-green-500"></div>
+                                    <div class="w-6 h-6 rounded bg-yellow-500"></div>
+                                    <div class="w-6 h-6 rounded bg-blue-500"></div>
+                                    <div class="w-6 h-6 rounded bg-purple-500"></div>
+                                    <div class="w-6 h-6 rounded bg-cyan-500"></div>
+                                    <div class="w-6 h-6 rounded bg-zinc-100 border border-zinc-700"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 		</main>
