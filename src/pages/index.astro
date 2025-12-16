@@ -6,6 +6,8 @@ import FormattedDate from '../components/FormattedDate.astro';
 import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
 import { ChevronRight, Terminal, Cpu, Code2, GitBranch, ArrowRight, FileText, Calendar } from 'lucide-react';
 import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
+import Avatar from '../assets/avatar.webp';
 
 // Data fetching
 const posts = await getCollection('blog');
@@ -43,11 +45,25 @@ try {
 		<main class="w-full max-w-5xl mx-auto px-4 py-8 md:py-16 flex-grow">
             <!-- Hero Section -->
             <div class="flex flex-col items-center text-center space-y-8 md:space-y-12 mb-16 md:mb-32">
+                <!-- Author Chip with Avatar -->
                 <div class="relative">
-                    <div class="absolute -inset-1 bg-gradient-to-r from-blue-600 to-cyan-600 rounded-lg blur opacity-25 animate-pulse"></div>
-                    <div class="relative bg-zinc-900 ring-1 ring-zinc-800 rounded-lg p-2 flex items-center gap-2 text-sm text-zinc-400">
-                        <Terminal size={16} className="text-blue-500" />
-                        <span>v1.0.0 stable</span>
+                    <div class="absolute -inset-0.5 bg-gradient-to-r from-blue-600 to-cyan-600 rounded-full blur opacity-20"></div>
+                    <div class="relative bg-zinc-900 ring-1 ring-zinc-800 rounded-full pl-1 pr-4 py-1 flex items-center gap-3 text-sm text-zinc-400">
+                        <div class="w-8 h-8 rounded-full overflow-hidden ring-2 ring-zinc-700">
+                            <Image 
+                                src={Avatar} 
+                                alt="ZeroLivesLeft" 
+                                class="w-full h-full object-cover"
+                                width={32}
+                                height={32}
+                            />
+                        </div>
+                        <span class="text-zinc-300">ZeroLivesLeft</span>
+                        <span class="text-zinc-600">•</span>
+                        <div class="flex items-center gap-1.5">
+                            <Terminal size={14} className="text-blue-500" />
+                            <span class="text-zinc-500">v1.0.0</span>
+                        </div>
                     </div>
                 </div>
                 
@@ -278,16 +294,20 @@ try {
                 
                 <div class="bg-zinc-900/50 rounded-lg border border-zinc-800 p-6 md:p-8">
                     <div class="flex flex-col md:flex-row gap-8 md:gap-12">
-                        <!-- ASCII Art / Logo -->
+                        <!-- Avatar -->
                         <div class="hidden md:flex items-center justify-center flex-shrink-0">
-                            <pre class="font-mono text-xs leading-tight">
-<span class="text-blue-500">     ___     </span>
-<span class="text-blue-500">    /   \    </span>
-<span class="text-blue-400">   | O O |   </span>
-<span class="text-blue-400">   |  _  |   </span>
-<span class="text-cyan-500">    \___/    </span>
-<span class="text-cyan-500">   _|___|_   </span>
-<span class="text-zinc-600">  [_______]  </span></pre>
+                            <div class="relative">
+                                <div class="absolute -inset-1 bg-gradient-to-br from-blue-500 via-cyan-500 to-purple-500 rounded-full blur opacity-30"></div>
+                                <div class="relative w-28 h-28 lg:w-32 lg:h-32 rounded-full overflow-hidden ring-2 ring-zinc-700">
+                                    <Image 
+                                        src={Avatar} 
+                                        alt="ZeroLivesLeft" 
+                                        class="w-full h-full object-cover"
+                                        width={128}
+                                        height={128}
+                                    />
+                                </div>
+                            </div>
                         </div>
                         
                         <!-- Stats Info -->

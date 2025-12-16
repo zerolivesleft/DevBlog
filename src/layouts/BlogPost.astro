@@ -25,7 +25,14 @@ const showTOC = headings.length > 1;
 
 <html lang="en" class="scroll-smooth">
 	<head>
-		<BaseHead title={title} description={description} />
+		<BaseHead 
+			title={title} 
+			description={description} 
+			image={heroImage}
+			articleDate={pubDate}
+			articleModified={updatedDate}
+			type="article"
+		/>
 	</head>
 
 	<body class="bg-zinc-950 text-zinc-100 flex flex-col min-h-screen font-mono">

@@ -241,7 +241,7 @@ const posts = (await getCollection('blog')).sort(
                 // Handle Enter key to open single result
                 searchInput.addEventListener('keydown', (e) => {
                     if (e.key === 'Enter') {
-                        const visiblePosts = posts.filter(post => post.style.display !== 'none');
+                        const visiblePosts = posts.filter(post => !post.classList.contains('opacity-0'));
                         if (visiblePosts.length === 1) {
                             const link = visiblePosts[0].querySelector('a');
                             if (link) {
