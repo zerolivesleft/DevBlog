@@ -1,62 +1,75 @@
-# Astro Starter Kit: Blog
+# DevBlog
 
-```sh
-npm create astro@latest -- --template blog
+A terminal-themed developer blog built with Astro, featuring a dark mode aesthetic inspired by modern code editors and terminal interfaces.
+
+**Live site:** [blog.zer0.live](https://blog.zer0.live)
+
+## Features
+
+- 🖥️ **Terminal-inspired design** — Dark theme with monospace fonts and terminal-style UI elements
+- 🔍 **Full-text search** — Powered by Pagefind for fast, client-side search across all posts
+- 📱 **Fully responsive** — Optimized for mobile with iOS-friendly interactions
+- ⚡ **Fast performance** — Static site generation with optimized images
+- 📝 **MDX support** — Write posts in Markdown with React component support
+- 🏷️ **Rich metadata** — Open Graph and Twitter Cards for beautiful link previews
+- 📡 **RSS feed** — Subscribe to new posts via RSS
+- 🗺️ **Sitemap** — Auto-generated sitemap for SEO
+- ♿ **Accessible** — Screen reader friendly with proper ARIA attributes
+
+## Tech Stack
+
+- [Astro](https://astro.build) — Static site generator
+- [React](https://react.dev) — Component library (for interactive elements)
+- [Tailwind CSS](https://tailwindcss.com) — Utility-first styling
+- [Pagefind](https://pagefind.app) — Static search
+- [Lucide React](https://lucide.dev) — Icons
+- [Cloudflare Pages](https://pages.cloudflare.com) — Hosting
+
+## Project Structure
+
 ```
-
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
-
-Features:
-
-- ✅ Minimal styling (make it your own!)
-- ✅ 100/100 Lighthouse performance
-- ✅ SEO-friendly with canonical URLs and OpenGraph data
-- ✅ Sitemap support
-- ✅ RSS Feed support
-- ✅ Markdown & MDX support
-
-## 🚀 Project Structure
-
-Inside of your Astro project, you'll see the following folders and files:
-
-```text
 ├── public/
+│   ├── fonts/           # JetBrains Mono Nerd Font
+│   └── favicon.png
 ├── src/
-│   ├── components/
-│   ├── content/
-│   ├── layouts/
-│   └── pages/
+│   ├── assets/          # Images (avatar, banner)
+│   ├── components/      # Astro/React components
+│   ├── content/blog/    # Blog posts (MDX)
+│   ├── layouts/         # Page layouts
+│   ├── pages/           # Routes
+│   └── styles/          # Global CSS
 ├── astro.config.mjs
-├── README.md
-├── package.json
-└── tsconfig.json
+└── wrangler.jsonc       # Cloudflare config
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+## Commands
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+| Command           | Action                                       |
+| :---------------- | :------------------------------------------- |
+| `npm install`     | Install dependencies                         |
+| `npm run dev`     | Start dev server at `localhost:4321`         |
+| `npm run build`   | Build production site to `./dist/`           |
+| `npm run preview` | Preview build locally before deploying       |
 
-The `src/content/` directory contains "collections" of related Markdown and MDX documents. Use `getCollection()` to retrieve posts from `src/content/blog/`, and type-check your frontmatter using an optional schema. See [Astro's Content Collections docs](https://docs.astro.build/en/guides/content-collections/) to learn more.
+## Writing Posts
 
-Any static assets, like images, can be placed in the `public/` directory.
+Create a new `.mdx` file in `src/content/blog/`:
 
-## 🧞 Commands
+```mdx
+---
+title: 'My New Post'
+description: 'A brief description'
+pubDate: 'Dec 17 2024'
+heroImage: './my-image.webp'
+---
 
-All commands are run from the root of the project, from a terminal:
+Your content here...
+```
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+## Deployment
 
-## 👀 Want to learn more?
+The site auto-deploys to Cloudflare Pages on push to `main`. The build command is configured in `wrangler.jsonc`.
 
-Check out [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+## License
 
-## Credit
-
-This theme is based off of the lovely [Bear Blog](https://github.com/HermanMartinus/bearblog/).
+MIT
