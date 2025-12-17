@@ -154,6 +154,7 @@ import { Github, Twitter, Menu, X, Terminal, Search } from 'lucide-react';
 
 	if (menuBtn && mobileMenu && openIcon && closeIcon) {
         let scrollPosition = 0;
+        const header = document.querySelector('header');
         
         const toggleMenu = (show) => {
             if (show) {
@@ -169,10 +170,19 @@ import { Github, Twitter, Menu, X, Terminal, Search } from 'lucide-react';
                 document.body.style.left = '0';
                 document.body.style.right = '0';
                 document.body.style.paddingRight = `${scrollbarWidth}px`;
+                // Keep header visible by making it fixed at top
+                if (header) {
+                    header.style.position = 'fixed';
+                    header.style.top = '0';
+                    header.style.left = '0';
+                    header.style.right = '0';
+                }
                 openIcon.classList.add('opacity-0', 'rotate-90', 'scale-0');
                 closeIcon.classList.remove('opacity-0', 'rotate-90', 'scale-0');
             } else {
                 mobileMenu.classList.add('translate-x-full');
+                openIcon.classList.remove('opacity-0', 'rotate-90', 'scale-0');
+                closeIcon.classList.add('opacity-0', 'rotate-90', 'scale-0');
                 setTimeout(() => {
                     // Restore scroll position after unlocking
                     document.documentElement.style.overflow = '';
@@ -182,10 +192,15 @@ import { Github, Twitter, Menu, X, Terminal, Search } from 'lucide-react';
                     document.body.style.left = '';
                     document.body.style.right = '';
                     document.body.style.paddingRight = '';
+                    // Restore header to sticky
+                    if (header) {
+                        header.style.position = '';
+                        header.style.top = '';
+                        header.style.left = '';
+                        header.style.right = '';
+                    }
                     window.scrollTo(0, scrollPosition);
                 }, 300);
-                openIcon.classList.remove('opacity-0', 'rotate-90', 'scale-0');
-                closeIcon.classList.add('opacity-0', 'rotate-90', 'scale-0');
             }
         };
 
