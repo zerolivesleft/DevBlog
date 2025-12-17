@@ -153,39 +153,32 @@ import { Github, Twitter, Menu, X, Terminal, Search } from 'lucide-react';
     };
 
 	if (menuBtn && mobileMenu && openIcon && closeIcon) {
-        let scrollPosition = 0;
+        // Prevent touch scroll on body when menu is open (iOS-friendly approach)
+        const preventScroll = (e) => {
+            // Allow scrolling within the menu itself
+            if (!mobileMenu.contains(e.target)) {
+                e.preventDefault();
+            }
+        };
         
         const toggleMenu = (show) => {
             if (show) {
-                // Store scroll position before locking
-                scrollPosition = window.scrollY;
                 mobileMenu.classList.remove('translate-x-full');
-                const scrollbarWidth = getScrollbarWidth();
-                // Lock both html and body to prevent iOS scroll
+                // Use touch event prevention instead of position:fixed (avoids iOS viewport bugs)
+                document.addEventListener('touchmove', preventScroll, { passive: false });
                 document.documentElement.style.overflow = 'hidden';
                 document.body.style.overflow = 'hidden';
-                document.body.style.position = 'fixed';
-                document.body.style.top = `-${scrollPosition}px`;
-                document.body.style.left = '0';
-                document.body.style.right = '0';
-                document.body.style.paddingRight = `${scrollbarWidth}px`;
                 openIcon.classList.add('opacity-0', 'rotate-90', 'scale-0');
                 closeIcon.classList.remove('opacity-0', 'rotate-90', 'scale-0');
             } else {
                 mobileMenu.classList.add('translate-x-full');
-                setTimeout(() => {
-                    // Restore scroll position after unlocking
-                    document.documentElement.style.overflow = '';
-                    document.body.style.overflow = '';
-                    document.body.style.position = '';
-                    document.body.style.top = '';
-                    document.body.style.left = '';
-                    document.body.style.right = '';
-                    document.body.style.paddingRight = '';
-                    window.scrollTo(0, scrollPosition);
-                }, 300);
                 openIcon.classList.remove('opacity-0', 'rotate-90', 'scale-0');
                 closeIcon.classList.add('opacity-0', 'rotate-90', 'scale-0');
+                setTimeout(() => {
+                    document.removeEventListener('touchmove', preventScroll);
+                    document.documentElement.style.overflow = '';
+                    document.body.style.overflow = '';
+                }, 300);
             }
         };
 
