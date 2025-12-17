@@ -63,9 +63,6 @@ pubDate: 'Dec 17 2024'
 heroImage: './my-image.webp'
 ---
 
-Your content here...
-```
-
 ## Deployment
 
 The site auto-deploys to Cloudflare Pages on push to `main`. The build command is configured in `wrangler.jsonc`.
