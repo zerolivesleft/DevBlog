@@ -89,7 +89,7 @@ const posts = (await getCollection('blog')).sort(
 									>
 										<div class="flex flex-col md:flex-row">
 											<!-- Image -->
-											{post.data.heroImage && (
+									{post.data.heroImage && (
 												<div class="md:w-48 lg:w-56 flex-shrink-0">
 													<div class="aspect-video md:aspect-[4/3] md:h-full relative overflow-hidden bg-zinc-800">
 														<Image 
@@ -108,7 +108,7 @@ const posts = (await getCollection('blog')).sort(
 											<div class="flex-1 p-4 md:p-5 flex flex-col justify-center">
 												<div class="flex items-center gap-2 mb-2">
 													<time class="text-xs text-zinc-500 font-mono">
-														<FormattedDate date={post.data.pubDate} />
+										<FormattedDate date={post.data.pubDate} />
 													</time>
 												</div>
 												<h2 class="font-semibold text-zinc-200 group-hover:text-blue-400 transition-colors text-base md:text-lg leading-snug mb-2">
@@ -124,11 +124,11 @@ const posts = (await getCollection('blog')).sort(
 												</div>
 											</div>
 										</div>
-									</a>
-								</li>
-							))
-						}
-					</ul>
+								</a>
+							</li>
+						))
+					}
+				</ul>
 					
 					<!-- Empty state -->
 					<div id="empty-state" class="hidden py-16 text-center bg-zinc-900/30 rounded-xl border border-zinc-800">

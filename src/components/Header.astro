@@ -4,7 +4,7 @@ import HeaderLink from './HeaderLink.astro';
 import { Github, Twitter, Menu, X, Terminal, Search } from 'lucide-react';
 ---
 
-<header class="bg-zinc-950/90 backdrop-blur-sm border-b border-zinc-800 sticky top-0 z-50">
+<header class="bg-zinc-950/90 backdrop-blur-sm border-b border-zinc-800 fixed top-0 left-0 right-0 z-50">
 	<nav class="max-w-5xl mx-auto px-4 py-3">
 		<div class="flex items-center justify-between">
 			<h2 class="text-xl font-bold tracking-tight flex items-center gap-2 relative z-50">
@@ -153,30 +153,19 @@ import { Github, Twitter, Menu, X, Terminal, Search } from 'lucide-react';
     };
 
 	if (menuBtn && mobileMenu && openIcon && closeIcon) {
-        let scrollPosition = 0;
-        const header = document.querySelector('header');
+        // Prevent background scroll on touch devices
+        const preventTouchScroll = (e) => {
+            if (!mobileMenu.contains(e.target)) {
+                e.preventDefault();
+            }
+        };
         
         const toggleMenu = (show) => {
             if (show) {
-                // Store scroll position before locking
-                scrollPosition = window.scrollY;
                 mobileMenu.classList.remove('translate-x-full');
-                const scrollbarWidth = getScrollbarWidth();
-                // Lock both html and body to prevent iOS scroll
-                document.documentElement.style.overflow = 'hidden';
                 document.body.style.overflow = 'hidden';
-                document.body.style.position = 'fixed';
-                document.body.style.top = `-${scrollPosition}px`;
-                document.body.style.left = '0';
-                document.body.style.right = '0';
-                document.body.style.paddingRight = `${scrollbarWidth}px`;
-                // Keep header visible by making it fixed at top
-                if (header) {
-                    header.style.position = 'fixed';
-                    header.style.top = '0';
-                    header.style.left = '0';
-                    header.style.right = '0';
-                }
+                document.documentElement.style.overflow = 'hidden';
+                document.addEventListener('touchmove', preventTouchScroll, { passive: false });
                 openIcon.classList.add('opacity-0', 'rotate-90', 'scale-0');
                 closeIcon.classList.remove('opacity-0', 'rotate-90', 'scale-0');
             } else {
@@ -184,22 +173,9 @@ import { Github, Twitter, Menu, X, Terminal, Search } from 'lucide-react';
                 openIcon.classList.remove('opacity-0', 'rotate-90', 'scale-0');
                 closeIcon.classList.add('opacity-0', 'rotate-90', 'scale-0');
                 setTimeout(() => {
-                    // Restore scroll position after unlocking
-                    document.documentElement.style.overflow = '';
                     document.body.style.overflow = '';
-                    document.body.style.position = '';
-                    document.body.style.top = '';
-                    document.body.style.left = '';
-                    document.body.style.right = '';
-                    document.body.style.paddingRight = '';
-                    // Restore header to sticky
-                    if (header) {
-                        header.style.position = '';
-                        header.style.top = '';
-                        header.style.left = '';
-                        header.style.right = '';
-                    }
-                    window.scrollTo(0, scrollPosition);
+                    document.documentElement.style.overflow = '';
+                    document.removeEventListener('touchmove', preventTouchScroll);
                 }, 300);
             }
         };
